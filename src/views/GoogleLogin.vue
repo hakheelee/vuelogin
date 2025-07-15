@@ -12,29 +12,34 @@
 
 <script setup>
 import { ref } from 'vue'; // Vue의 반응형 변수 및 상태 관리를 위한 ref 함수
-import { googleSdkLoaded } from 'vue3-google-login'; 
-
+import { googleSdkLoaded } from 'vue3-google-login';
 
 const oauthClientId = process.env.VUE_APP_OAUTH_CLIENT;
 
 // 로그인 상태를 관리하는 반응형 변수
 const isLoggedIn = ref(false); //초기 로그아웃상태여야함
 
-
 const login = () => {
+    console.log('OAuth Client ID:', oauthClientId); // 디버깅용
 
     googleSdkLoaded((google) => {
         // OAuth 2.0 클라이언트 초기화
         google.accounts.oauth2
             .initCodeClient({
-                client_id: oauthClientId, 
-                scope: 'email profile openid', 
+                client_id: oauthClientId,
+                scope: 'email profile openid',
+                ux_mode: 'popup', // 팝업 모드로 변경
                 callback: (response) => {
-                    
                     // 구글 인증에 성공한 후 호출되는 콜백 함수
                     console.log('응답을 처리합니다.', response);
-                    // 로그인 상태를 true로 업데이트
-                    isLoggedIn.value = true;
+                    if (response.code) {
+                        // 로그인 상태를 true로 업데이트
+                        isLoggedIn.value = true;
+                        alert('로그인 성공!');
+                    } else if (response.error) {
+                        console.error('로그인 오류:', response.error);
+                        alert('로그인에 실패했습니다: ' + response.error);
+                    }
                 }
             })
             .requestCode(); // 인증 코드를 요청합니다.
@@ -46,7 +51,6 @@ const login = () => {
  * 로그인 상태를 초기화하고, 세션 정리 등 추가 작업을 수행합니다.
  */
 const logout = () => {
-    
     console.log('User logged out');
     isLoggedIn.value = false;
 };
