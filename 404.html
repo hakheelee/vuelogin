@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vue Login App</title>
-    <script type="text/javascript">
-        // GitHub Pages SPA 라우팅 해결을 위한 스크립트
-        // 404 페이지에서 index.html로 리디렉션하면서 경로 정보를 전달
-        var pathSegmentsToKeep = 1;
-        var l = window.location;
-        l.replace(
-            l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-            l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-            l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-            (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-            l.hash
-        );
-    </script>
-</head>
-<body>
-</body>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vue Login App</title>
+        <script type="text/javascript">
+            // GitHub Pages SPA 라우팅 해결을 위한 스크립트
+            // 404 페이지에서 index.html로 리디렉션하면서 경로 정보를 전달
+            var pathSegmentsToKeep = 1
+            var l = window.location
+            l.replace(
+                l.protocol +
+                    "//" +
+                    l.hostname +
+                    (l.port ? ":" + l.port : "") +
+                    l.pathname
+                        .split("/")
+                        .slice(0, 1 + pathSegmentsToKeep)
+                        .join("/") +
+                    "/?/" +
+                    l.pathname.slice(1).split("/").slice(pathSegmentsToKeep).join("/").replace(/&/g, "~and~") +
+                    (l.search ? "&" + l.search.slice(1).replace(/&/g, "~and~") : "") +
+                    l.hash
+            )
+        </script>
+    </head>
+    <body></body>
 </html>
