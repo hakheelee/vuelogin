@@ -4,7 +4,7 @@ module.exports = defineConfig({
     // 프로젝트에서 사용하는 종속성을 트랜스파일링할지 여부를 설정합니다.
     transpileDependencies: true,
     lintOnSave: false,
-    
+
     // GitHub Pages 배포를 위한 설정
     publicPath: process.env.NODE_ENV === 'production' ? '/vuelogin/' : '/',
 

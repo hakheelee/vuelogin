@@ -21,9 +21,14 @@ export default {
     methods: {
         initializeNaverLoginButton() {
             try {
+                // 현재 도메인을 기반으로 callbackUrl 설정
+                const currentDomain = window.location.origin;
+                const callbackUrl = `${currentDomain}/naverlogin`;
+                const clientId = process.env.VUE_APP_NAVER_CLIENT_ID || 'auC8kDcoRx6AZ7q_uI6Z';
+                
                 this.naverLogin = new window.naver.LoginWithNaverId({
-                    clientId: 'auC8kDcoRx6AZ7q_uI6Z',
-                    callbackUrl: 'http://localhost:8080/naverlogin',
+                    clientId: clientId,
+                    callbackUrl: callbackUrl,
                     isPopup: false,
                     loginButton: { color: 'green', type: 3, height: 60 }
                 });
