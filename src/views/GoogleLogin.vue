@@ -22,28 +22,52 @@ const isLoggedIn = ref(false); //초기 로그아웃상태여야함
 const login = () => {
     console.log('OAuth Client ID:', oauthClientId); // 디버깅용
 
-    googleSdkLoaded((google) => {
-        // OAuth 2.0 클라이언트 초기화
-        google.accounts.oauth2
-            .initCodeClient({
+    try {
+        // Google Identity Services 직접 사용
+        if (window.google && window.google.accounts) {
+            const client = window.google.accounts.oauth2.initCodeClient({
                 client_id: oauthClientId,
                 scope: 'email profile openid',
-                ux_mode: 'popup', // 팝업 모드로 변경
+                ux_mode: 'popup',
                 callback: (response) => {
-                    // 구글 인증에 성공한 후 호출되는 콜백 함수
-                    console.log('응답을 처리합니다.', response);
+                    console.log('구글 응답:', response);
                     if (response.code) {
-                        // 로그인 상태를 true로 업데이트
                         isLoggedIn.value = true;
                         alert('로그인 성공!');
                     } else if (response.error) {
                         console.error('로그인 오류:', response.error);
-                        alert('로그인에 실패했습니다: ' + response.error);
+                        alert('로그인 실패: ' + response.error);
                     }
                 }
-            })
-            .requestCode(); // 인증 코드를 요청합니다.
-    });
+            });
+            client.requestCode();
+        } else {
+            // 기존 vue3-google-login 사용
+            googleSdkLoaded((google) => {
+                google.accounts.oauth2
+                    .initCodeClient({
+                        client_id: oauthClientId,
+                        scope: 'email profile openid',
+                        ux_mode: 'redirect', // 리디렉션 모드로 변경
+                        redirect_uri: 'https://hakheelee.github.io/vuelogin/',
+                        callback: (response) => {
+                            console.log('응답을 처리합니다.', response);
+                            if (response.code) {
+                                isLoggedIn.value = true;
+                                alert('로그인 성공!');
+                            } else if (response.error) {
+                                console.error('로그인 오류:', response.error);
+                                alert('로그인에 실패했습니다: ' + response.error);
+                            }
+                        }
+                    })
+                    .requestCode();
+            });
+        }
+    } catch (error) {
+        console.error('로그인 초기화 오류:', error);
+        alert('로그인을 초기화하는 중 오류가 발생했습니다.');
+    }
 };
 
 /**
