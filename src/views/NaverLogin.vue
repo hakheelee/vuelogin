@@ -25,7 +25,7 @@ export default {
                 const currentDomain = window.location.origin;
                 const callbackUrl = `${currentDomain}/naverlogin`;
                 const clientId = process.env.VUE_APP_NAVER_CLIENT_ID || 'auC8kDcoRx6AZ7q_uI6Z';
-                
+
                 this.naverLogin = new window.naver.LoginWithNaverId({
                     clientId: clientId,
                     callbackUrl: callbackUrl,
